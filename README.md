@@ -158,4 +158,4 @@ console.log(result);</pre>
 
 Hope will usefull for you all.
 
-Question ? please email : <me@ibacor.com>
+Question ? please email : <bachor.can@gmail.com>
