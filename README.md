@@ -148,7 +148,7 @@ console.log(result);</pre>
 &nbsp; &nbsp;}
 ]</pre>
 
-<h2><a href="http://ibacor.com/demo/visitor-parser-js">DEMO</a></h2>
+<h2><a href="http://ibacor.com/download/demo/visitor-parser-js/">DEMO</a></h2>
 
 <h2>Contribute</h2>
 <ul>
