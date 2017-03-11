@@ -21,7 +21,7 @@ visitorParser(config, function(data) {
     console.log(data);
 });</pre>
 
-<h2><a href="http://ibacor.com/download/demo/visitor-parser-js/">DEMO</a></h2>
+<h2><a href="https://bachors.github.io/visitor-parser-js/">DEMO</a></h2>
 
 <h2>Contribute</h2>
 <ul>
