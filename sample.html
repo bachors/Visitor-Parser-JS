@@ -1,0 +1,48 @@
+<style>pre{background:#333;color:#fff;padding:10px}</style>
+
+<h2>Default</h2>
+<pre>visitorParser(function(data) {
+    console.log(data);
+});</pre>
+Result:
+<pre id="default"></pre>
+<hr>
+<h2>With Configuration</h2>
+<pre>var config = {
+    // set user-agent string
+    setUa: 'Mozilla/5.0 (Linux; U; Android 2.3.5; de-de; SAMSUNG GT-S5830/S5830BUKS2 Build/GINGERBREAD) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1', 
+    // get all options result of regex
+    getOpt: true, 
+    // set url ip geo location apis
+    geoAPI: 'http://freegeoip.net/json/' 
+};
+visitorParser(config, function(data) {
+    console.log(data);
+});</pre>
+Result:
+<pre id="config"></pre>
+
+<script src="src/visitor-parser.js"></script>
+<script>
+	
+/* ---------------------- Default ------------------------------------------------------------------------------------- */
+	visitorParser(function(data) {
+		// console.log(data);
+		document.querySelector('#default').innerHTML = JSON.stringify(data, null, 2);
+	});
+	
+/* ---------------------- With Configuration -------------------------------------------------------------------------- */
+	var config = {
+		// set user-agent string
+		setUa: 'Mozilla/5.0 (Linux; U; Android 2.3.5; de-de; SAMSUNG GT-S5830/S5830BUKS2 Build/GINGERBREAD) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1', 
+        // get all options result of regex
+		getOpt: true, 
+		// set url ip geo location apis
+        geoAPI: 'http://freegeoip.net/json/' 
+	};
+	visitorParser(config, function(data) {
+		// console.log(data);
+		document.querySelector('#config').innerHTML = JSON.stringify(data, null, 2);
+	});
+
+</script>
