@@ -1,33 +1,28 @@
 /************************************************
- * #### visitor-parser.js v0.0.1 ####
+ * #### visitor-parser.js v0.0.2 ####
  * Coded by Ican Bachors 2016.
  * http://ibacor.com/labs/visitor-parser-js
  * Updates will be posted to this site.
  ************************************************/
 
-var visitorParser = function visitorParser(opt) {
-	
-/********************* Options **********************/
-	var defaultopt = {
-        setUa : navigator.userAgent, // set user-agent string
-		getOpt : false, // get all options result of regex
-		geoAPI : 'http://ip-api.com/json' // set url ip geo location apis
+var visitorParser = function(config, callback) {
+
+    /********************* Config **********************/
+    callback = (callback == undefined ? config : callback);
+    var defaultconfig = {
+        setUa: navigator.userAgent, // set user-agent string
+        getOpt: false, // get all options result of regex
+        geoAPI: 'http://ip-api.com/json' // set url ip geo location apis
     };
-	opt = (typeof opt === 'object' ? opt : {});
-	opt.setUa = (opt.setUa == undefined ? defaultopt.setUa : opt.setUa);
-	opt.getOpt = (opt.getOpt == undefined ? defaultopt.getOpt : opt.getOpt);
-	opt.geoAPI = (opt.geoAPI == undefined ? defaultopt.geoAPI : opt.geoAPI);
+    config = (typeof config === 'object' ? config : {});
+    config.setUa = (config.setUa == undefined ? defaultconfig.setUa : config.setUa);
+    config.getOpt = (config.getOpt == undefined ? defaultconfig.getOpt : config.getOpt);
+    config.geoAPI = (config.geoAPI == undefined ? defaultconfig.geoAPI : config.geoAPI);
 
-/********************** Object **********************/
-    this.getUas = getUas; // result user-agent. type string	
-    this.getInfo = getInfo; // result all visitor info user-agent & ip geo location.
-    this.getUa = getUa; // result user-agent info. specific (false) or all (true)
-	this.getGeo = getGeo; // result ip geo location info.
-
-/********************* Variable *********************/
+    /********************* Variable *********************/
     // object regex {match: value}
-    var regex = {		
-		platforms: {
+    var regex = {
+        platforms: {
             'windows nt 10.0': {
                 'name': 'Windows',
                 'version': '10'
@@ -133,7 +128,7 @@ var visitorParser = function visitorParser(opt) {
             'gnu': 'GNU/Linux',
             'unix': 'Unknown Unix OS',
             'linux': 'Linux'
-        },		
+        },
         browsers: {
             'obigo': 'Obigo',
             'netfront': 'Netfront Browser',
@@ -181,7 +176,7 @@ var visitorParser = function visitorParser(opt) {
             'Maxthon': 'Maxthon',
             'Safari': 'Safari',
             'Mozilla': 'Mozilla'
-        },		
+        },
         engines: {
             'presto/': 'Presto',
             'applewebKit/': 'AppleWebKit',
@@ -196,7 +191,7 @@ var visitorParser = function visitorParser(opt) {
             'links/': 'Links',
             'icab/': 'Icab',
             'gecko/': 'Gecko'
-        },		
+        },
         processors: {
             'x(?:86|64|32)': 'x',
             'amd(?:86|64|32)': 'x',
@@ -204,7 +199,7 @@ var visitorParser = function visitorParser(opt) {
             'ia(?:86|64|32)': 'x',
             'sun4(?:86|64|32)': 'x',
             'wow(?:86|64|32)': 'x',
-            'win(?:86|64|32)': 'x',			
+            'win(?:86|64|32)': 'x',
             'ppc(?:86|64|32)': 'x',
             'powerpc(?:86|64|32)': 'x',
             'avr(?:86|64|32)': 'x',
@@ -212,7 +207,7 @@ var visitorParser = function visitorParser(opt) {
             'irix(?:86|64|32)': 'x',
             'mips(?:86|64|32)': 'x',
             'sparc(?:86|64|32)': 'x'
-        },		
+        },
         mobiles: {
             'microsoft': 'Microsoft',
             'xbox': 'Microsoft',
@@ -323,7 +318,7 @@ var visitorParser = function visitorParser(opt) {
             'Archos': 'Archos',
             'Apple ': 'Apple',
             'playbook': 'Playbook'
-        },		
+        },
         robots: {
             'googlebot': 'Googlebot',
             'msnbot': 'MSNBot',
@@ -342,7 +337,7 @@ var visitorParser = function visitorParser(opt) {
             'feedfetcher-google': 'Feedfetcher Google',
             'curious george': 'Curious George'
         }
-	};
+    };
 
     // data to output
     var platform = preg_match(regex.platforms, true), // get platform info. regex and return array object
@@ -355,119 +350,79 @@ var visitorParser = function visitorParser(opt) {
             'width': window.innerWidth || document.body.clientWidth,
             'height': window.innerHeight || document.body.clientHeight
         },
-		date = new Date(), // get date
+        date = new Date(), // get date
         referring = uri(); // get url referrer info. string
-
-/********************* Function *********************/
-    function getUas() {
-        return opt.setUa;
-    }
-
-    function getUa() {
-        var res = {};
-		if(opt.getOpt){
-			res = {
-				'platform': platform,
-				'browser': browser,
-				'resolution': resolution,
-				'engine': engine,
-				'processor': processor,
-				'mobile': mobile,
-				'robot': robot,
-				'date': date,
-				'referring': referring
-			};
-        }else{
-			// change array object to object
-			res = {
-				'platform': (platform.length > 0 ? (typeof platform === 'object' ? platform[0] : platform) : {'name': ''}),
-				'browser': (browser.length > 0 ? (typeof browser === 'object' ? browser[0] : browser) : {'name': ''}),
-				'resolution': resolution,
-				'engine': (engine.length > 0 ? (typeof engine === 'object' ? engine[0] : engine) : {'name': ''}),
-				'processor': (processor.length > 0 ? (typeof processor === 'object' ? processor[0] : processor) : {'name': ''}),
-				'mobile': (mobile.length > 0 ? (typeof mobile === 'object' ? mobile[0] : mobile) : {'name': ''}),
-				'robot': (robot.length > 0 ? (typeof robot === 'object' ? robot[0] : robot) : {'name': ''}),
-				'date': date,
-				'referring': referring
-			};
-		}
-        return res;
-    }
 	
-    function getGeo() {
-		if (window.XMLHttpRequest) {
-			xmlhttp = new XMLHttpRequest();
-		} else {
-			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.open("GET", opt.geoAPI, false);
-		xmlhttp.send();
-		var jsn = xmlhttp.responseText,
-			res = {
-				'ip': '',
-				'provider': '',
-				'city': '',
-				'lat': '',
-				'lon': '',
-				'country': '',
-				'country_code': '',
-				'region': '',
-				'region_code': '',
-				'timezone': '',
-				'zip': ''
-			};
-		if(/^[\],:{}\s]*$/.test(jsn.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))){
-			var tek = JSON.parse(jsn);
-			for(var key in tek) {
-				if(/lat/ig.test(key)){
-					res.lat = tek[key];
-				}else if(/lon/ig.test(key)){
-					res.lon = tek[key];
-				}else if(/country/ig.test(key)){
-					if(tek[key].length > 2){
-						res.country = tek[key];
-					}else{
-						res.country_code = tek[key];
-					}
-				}else if(/region/ig.test(key)){
-					if(tek[key].length > 2){
-						res.region = tek[key];
-					}else{
-						res.region_code = tek[key];
-					}
-				}else if(/city/ig.test(key)){
-					res.city = tek[key];
-				}else if(/zone/ig.test(key)){
-					res.timezone = tek[key];
-				}else if(/[0-9]{1,3}(\.[0-9]{1,3}){3}/ig.test(tek[key])){
-					res.ip = tek[key];
-				}else if(/zip/ig.test(key)){
-					res.zip = tek[key];
-				}else if(/org/ig.test(key) || /isp/ig.test(key)){
-					res.provider = tek[key];
-				}
+	// Get json geo location
+	var xhttp = new XMLHttpRequest();
+	xhttp.onload = function () {
+		if (xhttp.readyState === 4) {
+			if (xhttp.status === 200) {
+				callback(getInfo(xhttp.responseText));
+			} else {
+				callback(getInfo(false));
 			}
 		}
-        return res;
-    }
+	};
+	xhttp.onerror = function () {
+		callback(getInfo(false));
+	};
+	xhttp.open("GET", config.geoAPI, true);
+	xhttp.send(); 
 
-    function getInfo() {
-        var res = {
-			'geo': this.getGeo(),
-			'ua': this.getUa()
-		};
+    /********************* Function *********************/
+    function getUa() {
+        var res = {};
+        if (config.getOpt) {
+            res = {
+                'platform': platform,
+                'browser': browser,
+                'resolution': resolution,
+                'engine': engine,
+                'processor': processor,
+                'mobile': mobile,
+                'robot': robot,
+                'date': date,
+                'referring': referring
+            };
+        } else {
+            // change array object to object
+            res = {
+                'platform': (platform.length > 0 ? (typeof platform === 'object' ? platform[0] : platform) : {
+                    'name': ''
+                }),
+                'browser': (browser.length > 0 ? (typeof browser === 'object' ? browser[0] : browser) : {
+                    'name': ''
+                }),
+                'resolution': resolution,
+                'engine': (engine.length > 0 ? (typeof engine === 'object' ? engine[0] : engine) : {
+                    'name': ''
+                }),
+                'processor': (processor.length > 0 ? (typeof processor === 'object' ? processor[0] : processor) : {
+                    'name': ''
+                }),
+                'mobile': (mobile.length > 0 ? (typeof mobile === 'object' ? mobile[0] : mobile) : {
+                    'name': ''
+                }),
+                'robot': (robot.length > 0 ? (typeof robot === 'object' ? robot[0] : robot) : {
+                    'name': ''
+                }),
+                'date': date,
+                'referring': referring
+            };
+        }
         return res;
     }
 
     // regex. find name & version. preg_match(name, version)
     function preg_match(a, b) {
         var c = [],
-			oj = {};
+            oj = {};
         for (var k in a) {
             var d = '';
             if (a.hasOwnProperty(k)) {
                 var e = new RegExp(k, 'i');
-                if (e.test(opt.setUa)) {
+                if (e.test(config.setUa)) {
                     if (typeof a[k] === 'object') {
                         oj = {
                             'name': a[k].name,
@@ -480,22 +435,22 @@ var visitorParser = function visitorParser(opt) {
                             var f2 = new RegExp(k + '/' + ck, 'i');
                             var f3 = new RegExp(k + '-' + ck, 'i');
                             var f4 = new RegExp(k + ' ' + ck, 'i');
-                            if (f1.test(opt.setUa)) {
+                            if (f1.test(config.setUa)) {
                                 var g = new RegExp(ck, 'ig');
-                                var tt = opt.setUa.match(f1)[0].match(g).length - 1;
-                                d = opt.setUa.match(f1)[0].match(g)[tt].replace('/', '').replace(/\_/g, '.').replace(/\-/g, '.')
-                            } else if (f2.test(opt.setUa)) {
+                                var tt = config.setUa.match(f1)[0].match(g).length - 1;
+                                d = config.setUa.match(f1)[0].match(g)[tt].replace('/', '').replace(/\_/g, '.').replace(/\-/g, '.')
+                            } else if (f2.test(config.setUa)) {
                                 var g = new RegExp('/' + ck, 'ig');
-                                var tt = opt.setUa.match(f2)[0].match(g).length - 1;
-                                d = opt.setUa.match(f2)[0].match(g)[tt].replace('/', '').replace(/\_/g, '.').replace(/\-/g, '.')
-                            } else if (f3.test(opt.setUa)) {
-                                var tt = opt.setUa.match(f3)[0].match(g).length - 1;
+                                var tt = config.setUa.match(f2)[0].match(g).length - 1;
+                                d = config.setUa.match(f2)[0].match(g)[tt].replace('/', '').replace(/\_/g, '.').replace(/\-/g, '.')
+                            } else if (f3.test(config.setUa)) {
+                                var tt = config.setUa.match(f3)[0].match(g).length - 1;
                                 var g = new RegExp('-' + ck, 'ig');
-                                d = opt.setUa.match(f3)[0].match(g)[tt].replace('-', '').replace(/\_/g, '.').replace(/\-/g, '.')
-                            } else if (f4.test(opt.setUa)) {
-                                var tt = opt.setUa.match(f4)[0].match(g).length - 1;
+                                d = config.setUa.match(f3)[0].match(g)[tt].replace('-', '').replace(/\_/g, '.').replace(/\-/g, '.')
+                            } else if (f4.test(config.setUa)) {
+                                var tt = config.setUa.match(f4)[0].match(g).length - 1;
                                 var g = new RegExp(' ' + ck, 'ig');
-                                d = opt.setUa.match(f4)[0].match(g)[tt].replace(' ', '').replace(/\_/g, '.').replace(/\-/g, '.')
+                                d = config.setUa.match(f4)[0].match(g)[tt].replace(' ', '').replace(/\_/g, '.').replace(/\-/g, '.')
                             }
                         }
                         (d != '' ? oj = {
@@ -507,7 +462,7 @@ var visitorParser = function visitorParser(opt) {
 
                     } else {
                         oj = {
-                            'name': opt.setUa.match(e)[0]
+                            'name': config.setUa.match(e)[0]
                         };
                     }
                     c.push(oj);
@@ -516,18 +471,72 @@ var visitorParser = function visitorParser(opt) {
         }
         return c
     }
-	
-	// get url referer & parser hostname
-	function uri(){
-		var parser = document.createElement('a');
-		parser.href = document.referrer;
-		
-		var domain = (document.referrer != '' ? parser.hostname : '');
-		
-		return {
-			'url': document.referrer,
-			'host': domain
-		};
-	}
+
+    // get url referer & parser hostname
+    function uri() {
+        var parser = document.createElement('a');
+        parser.href = document.referrer;
+        var domain = (document.referrer != '' ? parser.hostname : '');
+        return {
+            'url': document.referrer,
+            'host': domain
+        };
+    }
+
+    function getInfo(text) {
+        var parser = {
+            'ip': '',
+            'provider': '',
+            'city': '',
+            'lat': '',
+            'lon': '',
+            'country': '',
+            'country_code': '',
+            'region': '',
+            'region_code': '',
+            'timezone': '',
+            'zip': ''
+        };
+		if(text && /^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))){
+			var json = JSON.parse(text);
+			for (var key in json) {
+				if (/lat/ig.test(key)) {
+					parser.lat = json[key];
+				} else if (/lon/ig.test(key)) {
+					parser.lon = json[key];
+				} else if (/country/ig.test(key)) {
+					if (json[key].length > 2) {
+						parser.country = json[key];
+					} else {
+						parser.country_code = json[key];
+					}
+				} else if (/region/ig.test(key)) {
+					if (json[key].length > 2) {
+						parser.region = json[key];
+					} else {
+						parser.region_code = json[key];
+					}
+				} else if (/city/ig.test(key)) {
+					parser.city = json[key];
+				} else if (/zone/ig.test(key)) {
+					parser.timezone = json[key];
+				} else if (/[0-9]{1,3}(\.[0-9]{1,3}){3}/ig.test(json[key])) {
+					parser.ip = json[key];
+				} else if (/zip/ig.test(key)) {
+					parser.zip = json[key];
+				} else if (/org/ig.test(key) || /isp/ig.test(key)) {
+					parser.provider = json[key];
+				}
+			}
+		}
+        var visitor = {
+			'uas': config.setUa,
+			'parser': {
+				'geo': parser,
+				'ua': getUa()
+			}
+        };
+        return visitor;
+    }
 
 }
