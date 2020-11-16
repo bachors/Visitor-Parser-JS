@@ -1,5 +1,5 @@
 /************************************************
- * #### visitor-parser.js v0.0.2 ####
+ * #### visitor-parser.js v0.0.3 ####
  * Coded by Ican Bachors 2016.
  * http://ibacor.com/labs/visitor-parser-js
  * Updates will be posted to this site.
@@ -12,7 +12,7 @@ var visitorParser = function(config, callback) {
     var defaultconfig = {
         setUa: navigator.userAgent, // set user-agent string
         getOpt: false, // get all options result of regex
-        geoAPI: '//ip-api.com/json' // set url ip geo location apis
+        geoAPI: 'https://freegeoip.app/json/' // set url ip geo location apis
     };
     config = (typeof config === 'object' ? config : {});
     config.setUa = (config.setUa == undefined ? defaultconfig.setUa : config.setUa);
